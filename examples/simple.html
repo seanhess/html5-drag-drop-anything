@@ -1,0 +1,57 @@
+<html>
+
+
+  <style type='text/css'>
+    .square {
+      width: 100px;
+      height: 100px;
+    }
+    .target {
+      border: dotted 2px #888;
+    }
+    .blue {
+      background-color: #00F;
+    }
+    .red {
+      background-color: #F00;
+    }
+  </style>
+
+  <body>
+    <img id="img" src="img/smile.png"></img>
+    <div id="blue" class="square blue" draggable="true"></div>
+    <div id="drop" class="square target">
+    </div>
+  </body>
+
+  <script type='text/javascript'>
+    var blue = document.getElementById('blue')
+    var drop = document.getElementById('drop')
+
+    // pointer-events: none
+
+    blue.addEventListener('dragstart', function(e) {
+        console.log("dragstart")
+    })
+
+    drop.addEventListener('dragover', function(e) {
+        console.log("dragover")
+        e.preventDefault()
+        return false
+    })
+
+    drop.addEventListener('dragenter', function(e) {
+        console.log("dragenter")
+    })
+
+    drop.addEventListener('dragleave', function(e) {
+        console.log("dragleave")
+    })
+
+    drop.addEventListener('drop', function(e) {
+        console.log("WAHOO")
+    })
+
+  </script>
+
+</html>
