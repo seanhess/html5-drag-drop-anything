@@ -1,0 +1,78 @@
+<html>
+
+  <head>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="names">
+      <div class="name" draggable="true">Bob</div>
+      <div class="name" draggable="true">Dave</div>
+      <div class="name" draggable="true">Sarah</div>
+      <div class="name" draggable="true">Jane</div>
+    </div>
+    <div id="target" class="target">
+      <div id="dropIndicator" class="dropIndicator">Drop Names Here</div>
+      <div id="contents"></div>
+    </div>
+  </body>
+
+  <script type='text/javascript'>
+
+    // source events. We want to listen to all of them
+    var sources = document.querySelectorAll('.names .name');
+    [].forEach.call(sources, function(source) {
+      source.addEventListener('dragstart', function(e) {
+          source.classList.add("dragging")
+          e.dataTransfer.setData("text/plain", e.target.innerHTML)
+          var img = document.createElement("img")
+          img.src = "img/smile.png"
+          e.dataTransfer.setDragImage(img, 0, 0)
+      })
+
+      source.addEventListener('dragend', function(e) {
+          source.classList.remove("dragging")
+      })
+    })
+
+    // target events
+    var target = document.getElementById('target')
+    target.addEventListener('dragover', function(e) {
+        e.preventDefault()
+        return false
+    })
+
+    target.addEventListener('dragenter', function(e) {
+        e.target.classList.add("dragover")
+    })
+
+    // we want to call this from dragleave and drop
+    function onLeave(e) {
+        e.target.classList.remove("dragover")
+    }
+
+    target.addEventListener('dragleave', onLeave)
+
+    target.addEventListener('drop', function(e) {
+        var name = e.dataTransfer.getData("text/plain")
+        target.innerHTML += "<div class='name'>" + name + "</div>"
+        onLeave(e)
+    })
+
+
+
+    // Let's show where they should drop it!
+    document.addEventListener('dragstart', function(e) {
+        document.getElementById("dropIndicator").style.visibility = "visible"
+
+    })
+
+    document.addEventListener('dragend', function(e) {
+        document.getElementById("dropIndicator").style.visibility = "hidden"
+    })
+
+  </script>
+
+</html>
+
+

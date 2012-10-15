@@ -11,6 +11,7 @@ div, img {
   padding: 10px;
   min-height: 50px;
   margin: 10px;
+  position: relative;
 }
 .target .name {
 
@@ -47,3 +48,27 @@ div, img {
   border: solid 4px #0F0;
   background-color: #BFB;
 }
+
+
+.indicator {
+  position: absolute;
+  background-color: #BBF;
+  width: 100px;
+  padding: 10px;
+  left: -30px;
+}
+
+.dropIndicator {
+  Visibility: hidden;
+  background-color: #FBB;
+  padding: 10px;
+  position: absolute;
+  right: 0px;
+}
+
+.name.dragging {
+  opacity: 0.3;
+  border: dotted 1px #00F;
+
+}
+

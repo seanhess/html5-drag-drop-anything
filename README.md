@@ -37,6 +37,8 @@ Demos
 -----
 
 * [HTML5 Demos - drag to trash](http://html5demos.com/drag)
+* [HTML5 Demos - automatic upload](http://html5demos.com/dnd-upload)
+* [HTML5 Demos - drag anything](http://html5demos.com/drag-anything)
 * [Cards](http://localhost:4022/#/rooms/woot)
 
 Images, Links, and Draggable
@@ -119,7 +121,7 @@ Demo: examples/data.html
 
 We usually want to drag something. Think about it as data, not HTML.
 
-Use the data transfer object
+Use the data transfer object to share data between events
 
     box.addEventListener("dragenter", function(e) {
         e.dataTransfer.setData("text/plain", "hello!")
@@ -132,108 +134,157 @@ Then you can read that data in the drop event
         console.log("message:", message)
     })
 
-The format type is arbitrary, except in IE. IE requires "Text" or "Url"
+The format type is arbitrary, except in IE. IE requires "Text" or "Url".
 
-TODO: Instead, you can just put crap on the event?
+I can't find a way to set an object, but you could serialize an object.
 
-TODO: You could always serialize the JSON into the thing
+    e.dataTransfer.setData("something", JSON.stringify({key: "value"}))
 
 Accepting only certain things
 -----------------------------
 
+Demo: examples/buckets.html
+
 Put enough information onto the event to let you decide later
 
     source.addEventListener("dragstart", function(e) {
-        e.dataTransfer.setData("application/json", {message: "hello", type: "message"})
+        e.dataTransfer.setData("text/message", "hello")
     })
 
-Decide whether to cancel (accept) the drag in dragover
+Decide whether to cancel (accept) the drag in dragover. Consider using the types array
+
+    target.addEventListener("dragenter", function(e) {
+        if (e.dataTransfer.types[0] == "text/message") {
+            e.target.classList.add("draggingOver")
+        }
+    })
 
     target.addEventListener("dragover", function(e) {
-        var data = e.dataTransfer.getData("application/json")
-        if (data.type == "message") {
-            e.target.classList.add("draggingOver")
+        if (e.dataTransfer.types[0] == "text/message") {
             e.preventDefault()
             return false
         }
     })
 
-Remember dragover gets called a lot. You can set and check a value on the event instead of in the dataTransfer
+Remember dragover gets called a lot. You don't want to deserialize JSON every time. 
 
-Controlling the Drag Visual
----------------------------
 
-TODO: Manipulate the starting item
-TODO: Manipulate the indicator
-TODO: Highlighting the target when it happens (listen to dragstart on document?)
-TODO: pointer-events: none -- to prevent it from grabbing the 
-TODO: dataTransfer.setDragImage
+Visuals: setDragImage
+---------------------
 
+Demo: examples/visuals
+
+You can change the visual indicator for the drag, and control where the pointer is
+
+    source.addEventListener("dragstart", function(e) {
+        var img = document.createElement("img")
+        img.src = "img/drag-indicator.png"
+        e.dataTransfer.setDragImage(img, 0, 0)
+    })
+
+You can set it to a div instead, but it only works if the div is already displayed somewhere. You can't even render it off screen. 
+
+    // this works
+    var div = document.getElementById("indicator")
+
+    // neither of these work. this doesn't work. The cloned version isn't in the DOM.
+    var div = document.getElementById("indicator").cloneNode()
+    var div = document.createElement("div")
+
+    // customize it
+    div.innerHTML = "dragging stuff"
+
+    e.dataTransfer.setDragImage(div, 0, 0)
+
+
+Visuals: Manipulate the dragged item 
+------------------------------------
+
+Any changes affect both the original item AND the indicator
+
+    source.addEventListener("dragstart", function(e) {
+        // updates both!
+        e.target.style.opacity = 0.5
+    })
+
+If you set the drag image to another element, you can control them separately
+
+    source.addEventListener("dragstart", function(e) {
+        e.target.style.opacity = 0.5
+        var img = document.getElementById("indicator")
+        e.dataTransfer.setDragImage(img, 0, 0)
+    })
+
+Visuals: Highlight the drop target
+----------------------------------
+
+It can be good to show where they should put something. Listen on document because you want to show before its dragged over your item
+
+    document.addEventListener("dragenter", function(e) {
+        if (event is a name)
+          document.getElementById("names").classList.add("validTarget")
+
+        else if (event is a food)
+          document.getElementById("foods").classList.add("validTarget")
+    })
+
+Visuals: Greedy sub-elements grabbing the drag
+----------------------------------------------
+
+In the data example, we lose our highlight over existing elements. `dragleave` is fired over the main element
+
+* pointer-events: none
+* do some kind of hit test inside your leave handler
+* set a timer in dragover instead of clearing in leave
+ 
 Moving the item instead of the indicator
 ----------------------------------------
+
+There's no way to do this with the drag and drop API. You'll have to use mouse events instead, then manually move the item. 
+
+You can get close by hiding the original and calling `setDragImage` with a copy
 
 Dragging URLs and Images
 ------------------------
 
+TODO: show something here
+
 Dragging Files
 --------------
+
+You can drag to upload files. Browser support seems a little strange though. 
+
+http://html5doctor.com/drag-and-drop-to-server/
+
+TODO: code samples / example of dragging data
 
 Browser Support
 ---------------
 
-TODO: show browser support
-TODO: modernizer
+The code here should work in modern versions of all 4 major browsers. Consider using [Modernizr](http://modernizr.com/) to check for the availability of these features. 
 
 Mobile
 ------
 
-TODO: Not supported, but have touchstart, touchmove, touchend
+The Drag and Drop API doesn't really map cleanly on mobile devices. Some mobile browsers are working on it, but it's never going to be perfect because gestures mean something: drag means to scroll the page. 
+
+Use touch events instead or a gesture framework to create a different mobile experience.
 
 Sortable List
 -------------
 
-TODO: how would I even do this?
-TODO: use http://farhadi.ir/projects/html5sortable/
+I wanted to create a sortable list, but I ran out of time. Here's a great jQuery plugin that uses the drag and drop API for reference. 
+
+http://farhadi.ir/projects/html5sortable/
 
 
 
+
+
+STUFF
 event.dataTransfer.effectAllowed = "copy";
 https://developer.mozilla.org/en-US/docs/DragDrop/Drag_Operations
+TODO: "drag" event gets fired every time the mouse is moved
+TODO: can you cancel the enter event INSTEAD of the over event? and only have one?
 
-
-
-Todo
-----
-
-[ ] event parameters: clientX, originalTarget, etc
-
-Outline
--------
-
-?? Demo cards thing? - http://localhost:4022/#/rooms/woot
-
-draggable attribute
-modernizr
-dragging something over
-changing something when it starts
-transferring data
-
-accepting different kinds of data on different elements
-
-Magic: weird cancellation policies
-  -- show expecations and the magic words
-  -- make it fun. Expected: nope!
-
-dragging on urls and images
-
-making an angular widget?
-making a jquery component?
-making a sortable list?
-
-So, what's my cool project at the end?
-
-Browser Compatibility
-
-MAYBE
-Mobile dragging! (using touch start, etc)
 
