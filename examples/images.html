@@ -1,0 +1,50 @@
+<html>
+
+  <head>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div>Drag images or links to images from the web into this box</div>
+    <div id="target" class="target images">
+    </div>
+  </body>
+
+  <script type='text/javascript'>
+
+    // target events
+    var target = document.getElementById('target')
+    target.addEventListener('dragover', function(e) {
+        e.preventDefault()
+        return false
+    })
+
+    target.addEventListener('dragenter', function(e) {
+        e.target.classList.add("dragover")
+    })
+
+    // we want to call this from dragleave and drop
+    function onLeave(e) {
+        e.target.classList.remove("dragover")
+    }
+
+    target.addEventListener('dragleave', onLeave)
+
+    target.addEventListener('drop', function(e) {
+        // don't let the browser switch to an image!
+        e.preventDefault()
+        onLeave(e)
+
+        // I can't figure out how to get the URL from firefox. You could use the image html instead
+        var html = e.dataTransfer.getData("text/html")
+        var url = e.dataTransfer.getData("url") || e.dataTransfer.getData("text/uri-list")
+        var img = document.createElement("img")
+        img.src = url
+        target.appendChild(img)
+    })
+
+  </script>
+
+</html>
+
+

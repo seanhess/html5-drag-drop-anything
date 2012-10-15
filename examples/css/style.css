@@ -69,6 +69,14 @@ div, img {
 .name.dragging {
   opacity: 0.3;
   border: dotted 1px #00F;
+}
 
+.target.images {
+  height: 100px;
+}
+
+.target.images > img {
+  width: 100px;
+  float: left;
 }
 

@@ -69,6 +69,10 @@ You can bind to dragstart and dragend to know when an item is dragged
 
     })
 
+    box.addEventListener("drag", function(e) {
+      // called constantly as you hold the drag
+    })
+
 These are important for setting data and changing the visual appearance
 
 Simple Drop Events
@@ -168,7 +172,6 @@ Decide whether to cancel (accept) the drag in dragover. Consider using the types
 
 Remember dragover gets called a lot. You don't want to deserialize JSON every time. 
 
-
 Visuals: setDragImage
 ---------------------
 
@@ -195,6 +198,8 @@ You can set it to a div instead, but it only works if the div is already display
     div.innerHTML = "dragging stuff"
 
     e.dataTransfer.setDragImage(div, 0, 0)
+
+You can also set it to a canvas
 
 
 Visuals: Manipulate the dragged item 
@@ -233,30 +238,63 @@ Visuals: Greedy sub-elements grabbing the drag
 
 In the data example, we lose our highlight over existing elements. `dragleave` is fired over the main element
 
-* pointer-events: none
+* set `pointer-events: none` on the children
 * do some kind of hit test inside your leave handler
 * set a timer in dragover instead of clearing in leave
+* keep track of the currently entered element and don't clear if its a descendant
  
-Moving the item instead of the indicator
-----------------------------------------
+Visuals: Moving the item instead of the indicator
+-------------------------------------------------
 
 There's no way to do this with the drag and drop API. You'll have to use mouse events instead, then manually move the item. 
 
 You can get close by hiding the original and calling `setDragImage` with a copy
 
-Dragging URLs and Images
-------------------------
+Native Dragging: URLs and Images
+--------------------------------
 
-TODO: show something here
+Demo: examples/images.html
 
-Dragging Files
---------------
+You can drag links and images across browser windows. Chrome and Safari populate `text/uri-list` (according to the spec). IE sets "url"
 
-You can drag to upload files. Browser support seems a little strange though. 
+    target.addEventListener('drop', function(e) {
+        // don't let the browser switch to an image!
+        e.preventDefault()
 
-http://html5doctor.com/drag-and-drop-to-server/
+        // read the data
+        var url = e.dataTransfer.getData("url") || e.dataTransfer.getData("text/uri-list")
+        var img = document.createElement("img")
+        img.src = url
+        target.appendChild(img)
+    })
 
-TODO: code samples / example of dragging data
+All browsers seem to populate `text/html`
+
+You could drag a link to anything, including JSON data. You could download the data with XHR and do something with it
+
+Native Dragging: Files
+----------------------
+
+Demo: examples/files.html
+
+If you drag files onto something droppable it populates `dataTransfer.files`. Just stick the files into a `FormData`
+
+    target.addEventListener('drop', function(e) {
+        e.preventDefault()
+        var formData = new FormData()
+        formData.append('file', e.dataTransfer.files[0])
+        // then POST it to your server with formData as the body
+    })
+
+You can render a preview with `FileReader`
+
+    var reader = new FileReader()
+    reader.onload = function (event) {
+      var image = new Image()
+      image.src = event.target.result
+      target.appendChild(image)
+    }
+    reader.readAsDataURL(e.dataTransfer.files[0])
 
 Browser Support
 ---------------
@@ -278,13 +316,8 @@ I wanted to create a sortable list, but I ran out of time. Here's a great jQuery
 http://farhadi.ir/projects/html5sortable/
 
 
+Out of Time
+-----------
 
-
-
-STUFF
-event.dataTransfer.effectAllowed = "copy";
-https://developer.mozilla.org/en-US/docs/DragDrop/Drag_Operations
-TODO: "drag" event gets fired every time the mouse is moved
-TODO: can you cancel the enter event INSTEAD of the over event? and only have one?
-
+Drop effect/effectAllowed
 

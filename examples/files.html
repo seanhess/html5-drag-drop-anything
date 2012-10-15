@@ -1,0 +1,62 @@
+<html>
+
+  <head>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div>Drag images from your desktop into this box</div>
+    <div id="target" class="target images">
+    </div>
+  </body>
+
+  <script type='text/javascript'>
+
+    // target events
+    var target = document.getElementById('target')
+    target.addEventListener('dragover', function(e) {
+        e.preventDefault()
+        return false
+    })
+
+    target.addEventListener('dragenter', function(e) {
+        e.target.classList.add("dragover")
+    })
+
+    // we want to call this from dragleave and drop
+    function onLeave(e) {
+        e.target.classList.remove("dragover")
+    }
+
+    target.addEventListener('dragleave', onLeave)
+
+    target.addEventListener('drop', function(e) {
+        // don't let the browser switch to an image!
+        e.preventDefault()
+        onLeave(e)
+
+        // Create a formData with the file
+        var formData = new FormData()
+        formData.append('file', e.dataTransfer.files[0])
+        // ... insert POST to server code here
+
+        // Render a preview with file reader!
+        var reader = new FileReader()
+        reader.onload = function (event) {
+          var image = new Image()
+          image.src = event.target.result
+          target.appendChild(image)
+        }
+        reader.readAsDataURL(e.dataTransfer.files[0])
+    })
+
+    function renderPreview(file) {
+        // Render a preview using FileReader
+    }
+
+  </script>
+
+</html>
+
+
+

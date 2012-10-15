@@ -18,10 +18,15 @@
     // source events
     blue.addEventListener('dragstart', function(e) {
         console.log("dragstart", e)
+        e.dataTransfer.setData('text/plain', '') // won't even work in FF unless it has some data
     })
 
     blue.addEventListener('dragend', function(e) {
         console.log("dragend")
+    })
+    
+    blue.addEventListener('drag', function(e) {
+        console.log('drag')
     })
 
 
