@@ -1,57 +1,54 @@
 <html>
 
-
-  <style type='text/css'>
-    .square {
-      width: 100px;
-      height: 100px;
-    }
-    .target {
-      border: dotted 2px #888;
-    }
-    .blue {
-      background-color: #00F;
-    }
-    .red {
-      background-color: #F00;
-    }
-  </style>
+  <head>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
 
   <body>
     <img id="img" src="img/smile.png"></img>
     <div id="blue" class="square blue" draggable="true"></div>
-    <div id="drop" class="square target">
+    <div id="target" class="target">
     </div>
   </body>
 
   <script type='text/javascript'>
     var blue = document.getElementById('blue')
-    var drop = document.getElementById('drop')
+    var target = document.getElementById('target')
 
-    // pointer-events: none
-
+    // source events
     blue.addEventListener('dragstart', function(e) {
-        console.log("dragstart")
+        console.log("dragstart", e)
     })
 
-    drop.addEventListener('dragover', function(e) {
+    blue.addEventListener('dragend', function(e) {
+        console.log("dragend")
+    })
+
+
+    // target events
+    target.addEventListener('dragover', function(e) {
         console.log("dragover")
         e.preventDefault()
         return false
     })
 
-    drop.addEventListener('dragenter', function(e) {
-        console.log("dragenter")
+    target.addEventListener('dragenter', function(e) {
+        console.log("dragenter", e)
+        e.target.classList.add("dragover")
     })
 
-    drop.addEventListener('dragleave', function(e) {
-        console.log("dragleave")
-    })
+    // we want to call this from dragleave and drop
+    function onLeave(e) {
+        e.target.classList.remove("dragover")
+    }
 
-    drop.addEventListener('drop', function(e) {
-        console.log("WAHOO")
-    })
+    target.addEventListener('dragleave', onLeave)
 
+    // dragleave does not fire on a drop event, so let's call onLeave to cancel the visual
+    target.addEventListener('drop', function(e) {
+        console.log("drop", e)
+        onLeave(e) 
+    })
   </script>
 
 </html>

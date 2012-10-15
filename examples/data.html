@@ -1,0 +1,62 @@
+<html>
+
+  <head>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="names">
+      <div class="name" draggable="true">Bob</div>
+      <div class="name" draggable="true">Dave</div>
+      <div class="name" draggable="true">Sarah</div>
+      <div class="name" draggable="true">Jane</div>
+    </div>
+    <div id="target" class="target">
+    </div>
+  </body>
+
+  <script type='text/javascript'>
+
+    // source events. We want to listen to all of them
+    var sources = document.querySelectorAll('.names .name');
+    [].forEach.call(sources, function(source) {
+      source.addEventListener('dragstart', function(e) {
+          console.log("dragstart", e)
+          e.dataTransfer.setData("text/plain", e.target.innerHTML)
+      })
+    })
+
+    // target events
+    var target = document.getElementById('target')
+    target.addEventListener('dragover', function(e) {
+        e.preventDefault()
+        return false
+    })
+
+    target.addEventListener('dragenter', function(e) {
+        e.target.classList.add("dragover")
+    })
+
+    // we want to call this from dragleave and drop
+    function onLeave(e) {
+        console.log("LEAVE")
+        e.target.classList.remove("dragover")
+    }
+
+    target.addEventListener('dragleave', onLeave)
+
+    target.addEventListener('drop', function(e) {
+        console.log("drop", e)
+        var name = e.dataTransfer.getData("text/plain")
+        console.log("TESTING", name)
+
+        // !! e.target is the innermost element dropped onto
+        // !! dragleave is called when you get over another element
+        target.innerHTML += "<div class='name'>" + name + "</div>"
+        onLeave(e)
+    })
+
+  </script>
+
+</html>
+

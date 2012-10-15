@@ -1,0 +1,39 @@
+div, img {
+  margin: 10px;
+}
+.square {
+  width: 100px;
+  height: 50;
+}
+.target {
+  clear: both;
+  border: dashed 4px #888;
+  padding: 10px;
+  min-height: 50px;
+  margin: 10px;
+}
+.target .name {
+
+}
+.target.dragover {
+  border: solid 4px #F00;
+  background-color: #FBB;
+}
+.blue {
+  background-color: #00F;
+}
+.red {
+  background-color: #F00;
+}
+
+
+
+.names {
+
+}
+
+.name {
+  float: left;
+  border: solid 1px #00F;
+  padding: 3px;
+}
