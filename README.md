@@ -53,7 +53,7 @@ This leaves the item in place, and drags an indicator
 Simple Drag Events
 ------------------
 
-See: examples/simple.html
+Demo: examples/simple.html
 
 You can bind to dragstart and dragend to know when an item is dragged
 
@@ -64,7 +64,7 @@ You can bind to dragstart and dragend to know when an item is dragged
     })
 
     box.addEventListener("dragend", function(e) {
-      
+
     })
 
 These are important for setting data and changing the visual appearance
@@ -80,10 +80,8 @@ dragenter and dragleave do what you'd expect
 
     var target = document.getElementById("target")
     target.addEventListener("dragenter", function(e) {
-
       // give the user visual feedback
       e.target.classList.add("draggingOver")
-
     })
 
     target.addEventListener("dragleave", function(e) {
@@ -117,14 +115,50 @@ TODO: ??? Have to also cancel dragenter?
 Dragging Data
 -------------
 
-We usually want to drag something. Think of dragging data
+Demo: examples/data.html
 
-TODO: dataTransfer object (dropEffect, effectAllowed, files, items, types)
+We usually want to drag something. Think about it as data, not HTML.
+
+Use the data transfer object
+
+    box.addEventListener("dragenter", function(e) {
+        e.dataTransfer.setData("text/plain", "hello!")
+    })
+
+Then you can read that data in the drop event
+
+    target.addEventListener("drop", function(e) {
+        var message = e.dataTransfer.getData("text/plain") 
+        console.log("message:", message)
+    })
+
+The format type is arbitrary, except in IE. IE requires "Text" or "Url"
+
+TODO: Instead, you can just put crap on the event?
+
+TODO: You could always serialize the JSON into the thing
 
 Accepting only certain things
 -----------------------------
 
-TODO: show dropTypes
+Put enough information onto the event to let you decide later
+
+    source.addEventListener("dragstart", function(e) {
+        e.dataTransfer.setData("application/json", {message: "hello", type: "message"})
+    })
+
+Decide whether to cancel (accept) the drag in dragover
+
+    target.addEventListener("dragover", function(e) {
+        var data = e.dataTransfer.getData("application/json")
+        if (data.type == "message") {
+            e.target.classList.add("draggingOver")
+            e.preventDefault()
+            return false
+        }
+    })
+
+Remember dragover gets called a lot. You can set and check a value on the event instead of in the dataTransfer
 
 Controlling the Drag Visual
 ---------------------------
@@ -133,6 +167,7 @@ TODO: Manipulate the starting item
 TODO: Manipulate the indicator
 TODO: Highlighting the target when it happens (listen to dragstart on document?)
 TODO: pointer-events: none -- to prevent it from grabbing the 
+TODO: dataTransfer.setDragImage
 
 Moving the item instead of the indicator
 ----------------------------------------

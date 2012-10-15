@@ -19,6 +19,7 @@ div, img {
   border: solid 4px #F00;
   background-color: #FBB;
 }
+
 .blue {
   background-color: #00F;
 }
@@ -28,12 +29,21 @@ div, img {
 
 
 
-.names {
-
-}
-
-.name {
+.name, .food {
   float: left;
   border: solid 1px #00F;
   padding: 3px;
+}
+
+.food {
+  border: solid 1px #0F0;
+}
+
+.target.names.dragover {
+  border: solid 4px #00F;
+  background-color: #BBF;
+}
+.target.foods.dragover {
+  border: solid 4px #0F0;
+  background-color: #BFB;
 }

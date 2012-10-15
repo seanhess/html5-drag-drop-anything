@@ -1,0 +1,113 @@
+<html>
+
+  <head>
+    <link href="css/style.css" rel="stylesheet">
+  </head>
+
+  <body>
+    <div class="names">
+      <div class="name" draggable="true">Bob</div>
+      <div class="name" draggable="true">Dave</div>
+      <div class="name" draggable="true">Sarah</div>
+      <div class="name" draggable="true">Jane</div>
+    </div>
+
+
+    <div class="foods">
+      <div class="food" draggable="true">Peanuts</div>
+      <div class="food" draggable="true">Banana</div>
+      <div class="food" draggable="true">Red Curry</div>
+      <div class="food" draggable="true">Pizza</div>
+    </div>
+
+    <div id="namesTarget" class="target names">
+    </div>
+
+    <div id="foodsTarget" class="target foods">
+    </div>
+  </body>
+
+  <script type='text/javascript'>
+
+    // drag names!
+    var names = document.querySelectorAll('.names .name');
+    [].forEach.call(names, function(name) {
+      name.addEventListener('dragstart', function(e) {
+          e.dataTransfer.setData("text/name", name.innerHTML)
+      })
+    })
+
+    // drag foods
+    var foods = document.querySelectorAll('.foods .food');
+    [].forEach.call(foods, function(food) {
+      food.addEventListener('dragstart', function(e) {
+          e.dataTransfer.setData("text/food", food.innerHTML)
+      })
+    })
+
+
+
+
+
+
+    // Targets
+    // There are lots of ways we could make these functions more DRY, but they are spelled out here for clarity. 
+
+
+    // tells us whether a drag event is the right type
+    function hasData(type, e) {
+        return (e.dataTransfer.types[0] == type)
+    }
+
+    // we want to call this from dragleave and drop
+    function onLeave(e) {
+        e.target.classList.remove("dragover")
+    }
+
+    var namesTarget = document.getElementById("namesTarget")
+    var foodsTarget = document.getElementById("foodsTarget")
+
+    namesTarget.addEventListener('dragover', function(e) {
+        if (!hasData("text/name", e)) return
+        e.preventDefault()
+        return false
+    })
+
+    namesTarget.addEventListener('dragenter', function(e) {
+        if (!hasData("text/name", e)) return
+        e.target.classList.add("dragover")
+    })
+
+    namesTarget.addEventListener('dragleave', onLeave)
+    namesTarget.addEventListener('drop', function(e) {
+        var data = e.dataTransfer.getData("text/name")
+        namesTarget.innerHTML += "<div class='name'>" + data + "</div>"
+        onLeave(e)
+    })
+
+
+
+
+    foodsTarget.addEventListener('dragover', function(e) {
+        if (!hasData("text/food", e)) return
+        e.preventDefault()
+        return false
+    })
+
+    foodsTarget.addEventListener('dragenter', function(e) {
+        if (!hasData("text/food", e)) return
+        e.target.classList.add("dragover")
+    })
+
+    foodsTarget.addEventListener('dragleave', onLeave)
+    foodsTarget.addEventListener('drop', function(e) {
+        var data = e.dataTransfer.getData("text/food")
+        foodsTarget.innerHTML += "<div class='food'>" + data + "</div>"
+        onLeave(e)
+    })
+
+  </script>
+
+</html>
+
+

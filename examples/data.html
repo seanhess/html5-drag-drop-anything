@@ -39,7 +39,6 @@
 
     // we want to call this from dragleave and drop
     function onLeave(e) {
-        console.log("LEAVE")
         e.target.classList.remove("dragover")
     }
 
@@ -48,8 +47,6 @@
     target.addEventListener('drop', function(e) {
         console.log("drop", e)
         var name = e.dataTransfer.getData("text/plain")
-        console.log("TESTING", name)
-
         // !! e.target is the innermost element dropped onto
         // !! dragleave is called when you get over another element
         target.innerHTML += "<div class='name'>" + name + "</div>"
