@@ -4,10 +4,12 @@ HTML5 Drag and Drop Anything
 
 This readme is meant to be read like a slide presentation. Each header is a new slide. Code accompanying the presentation is also checked in to this repo.
 
+This is all online here: https://github.com/seanhess/html5-drag-drop-anything
+
 About Me
 --------
 
-* Just left i.TV
+* Cofounded i.TV
 * Previously consulting and training
 * http://seanhess.github.com
 
