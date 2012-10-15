@@ -2,7 +2,11 @@
 HTML5 Drag and Drop Anything
 ============================
 
-This readme is meant to be read like a slide presentation. Each header is a new slide. Code accompanying the presentation is also checked in to this repo.
+This readme is meant to be read like a slide presentation. 
+
+Each header is a new slide. 
+
+Code accompanying the presentation is also checked in to this repo.
 
 This is all online here: https://github.com/seanhess/html5-drag-drop-anything
 
@@ -180,7 +184,7 @@ You can change the visual indicator for the drag, and control where the pointer 
         e.dataTransfer.setDragImage(img, 0, 0)
     })
 
-You can set it to a div instead, but it only works if the div is already displayed somewhere. You can't even render it off screen. 
+You can set it to a div instead, but it only works if the div is already displayed somewhere. 
 
     // this works
     var div = document.getElementById("indicator")
@@ -194,7 +198,7 @@ You can set it to a div instead, but it only works if the div is already display
 
     e.dataTransfer.setDragImage(div, 0, 0)
 
-You can also set it to a canvas
+[You can also set it to a canvas](http://paul.kinlan.me/using-html5-canvas-with-drag-and-drop-setdrag/)
 
 
 Visuals: Manipulate the dragged item 
@@ -218,7 +222,9 @@ If you set the drag image to another element, you can control them separately
 Visuals: Highlight the drop target
 ----------------------------------
 
-It can be good to show where they should put something. Listen on document because you want to show before its dragged over your item
+It can be good to show where they should put something. 
+
+Listen on document because you want to show before its dragged over your item
 
     document.addEventListener("dragenter", function(e) {
         if (event is a name)
@@ -231,7 +237,9 @@ It can be good to show where they should put something. Listen on document becau
 Visuals: Greedy sub-elements grabbing the drag
 ----------------------------------------------
 
-In the data example, we lose our highlight over existing elements. `dragleave` is fired over the main element
+In the data example, we lose our highlight over existing elements. 
+
+`dragleave` is fired over the main element
 
 * set `pointer-events: none` on the children
 * do some kind of hit test inside your leave handler
@@ -241,7 +249,9 @@ In the data example, we lose our highlight over existing elements. `dragleave` i
 Visuals: Moving the item instead of the indicator
 -------------------------------------------------
 
-There's no way to do this with the drag and drop API. You'll have to use mouse events instead, then manually move the item. 
+There's no way to do this with the drag and drop API. 
+
+You'll have to use mouse events instead, then manually move the item. 
 
 You can get close by hiding the original and calling `setDragImage` with a copy
 
@@ -250,7 +260,9 @@ Native Dragging: URLs and Images
 
 Demo: examples/images.html
 
-You can drag links and images across browser windows. Chrome and Safari populate `text/uri-list` (according to the spec). IE sets "url"
+You can drag links and images across browser windows. 
+
+Chrome and Safari populate `text/uri-list` (according to the spec). IE sets "url"
 
     target.addEventListener('drop', function(e) {
         // don't let the browser switch to an image!
@@ -265,14 +277,16 @@ You can drag links and images across browser windows. Chrome and Safari populate
 
 All browsers seem to populate `text/html`
 
-You could drag a link to anything, including JSON data. You could download the data with XHR and do something with it
+You could drag a link to anything, including JSON data. (download it)
 
 Native Dragging: Files
 ----------------------
 
 Demo: examples/files.html
 
-If you drag files onto something droppable it populates `dataTransfer.files`. Just stick the files into a `FormData`
+If you drag files onto something droppable it populates `dataTransfer.files`. 
+
+Just stick the files into a `FormData`
 
     target.addEventListener('drop', function(e) {
         e.preventDefault()
@@ -294,19 +308,25 @@ You can render a preview with `FileReader`
 Browser Support
 ---------------
 
-The code here should work in modern versions of all 4 major browsers. Consider using [Modernizr](http://modernizr.com/) to check for the availability of these features. 
+The code here should work in modern versions of all 4 major browsers. 
+
+Consider using [Modernizr](http://modernizr.com/) to check for the availability of these features. 
 
 Mobile
 ------
 
-The Drag and Drop API doesn't really map cleanly on mobile devices. Some mobile browsers are working on it, but it's never going to be perfect because gestures mean something: drag means to scroll the page. 
+The Drag and Drop API doesn't really map cleanly on mobile devices. 
+
+Some mobile browsers are working on it, but it's never going to be perfect because gestures mean something: drag means to scroll the page. 
 
 Use touch events instead or a gesture framework to create a different mobile experience.
 
 Sortable List
 -------------
 
-I wanted to create a sortable list, but I ran out of time. Here's a great jQuery plugin that uses the drag and drop API for reference. 
+I wanted to create a sortable list, but I ran out of time. 
+
+Here's a great jQuery plugin that uses the drag and drop API for reference. 
 
 http://farhadi.ir/projects/html5sortable/
 
