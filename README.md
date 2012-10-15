@@ -4,13 +4,11 @@ HTML5 Drag and Drop Anything
 
 This readme is meant to be read like a slide presentation. Each header is a new slide. Code accompanying the presentation is also checked in to this repo.
 
-Discuss: TODO add discussion link
-
 About Me
 --------
 
-* Cofounded i.TV
-* Training and Consulting
+* Just left i.TV
+* Previously consulting and training
 * http://seanhess.github.com
 
 References
@@ -20,18 +18,15 @@ References
 * [The HTML5 Drag and Drop API](http://www.quirksmode.org/blog/archives/2009/09/the_html5_drag.html)
 * [MDN - Drag and Drop](https://developer.mozilla.org/en-US/docs/DragDrop/Drag_and_Drop)
 
-http://html5demos.com/drag
-- trash items in a list
-
-http://html5demos.com/drag-anything
-- drag any item onto the screen and see it's file info
-
 HTML5 Drag and Drop
 -------------------
 
-* You can do almost all of this with mouse events
-* Supposed to be a higher level API
-* Some quirks to worry about
+* Higher level than mouse events
+* Can drag any div, image or link
+* Can drag files and links from your desktop
+
+* Limitation: Some quirks and browser incompatibilities
+* Limitation: Doesn't map to mobile very well
 
 Demos
 -----
@@ -39,7 +34,7 @@ Demos
 * [HTML5 Demos - drag to trash](http://html5demos.com/drag)
 * [HTML5 Demos - automatic upload](http://html5demos.com/dnd-upload)
 * [HTML5 Demos - drag anything](http://html5demos.com/drag-anything)
-* [Cards](http://localhost:4022/#/rooms/woot)
+* [More Complex Example: Cards](http://localhost:4022/#/rooms/woot) (will not work online)
 
 Images, Links, and Draggable
 ----------------------------
@@ -116,8 +111,6 @@ You must cancel the dragover event to indicate you accept that kind of drag
 
 Note that dragleave is not called on a drop.
 
-TODO: ??? Have to also cancel dragenter?
-
 Dragging Data
 -------------
 
@@ -175,7 +168,7 @@ Remember dragover gets called a lot. You don't want to deserialize JSON every ti
 Visuals: setDragImage
 ---------------------
 
-Demo: examples/visuals
+Demo: examples/visuals.html
 
 You can change the visual indicator for the drag, and control where the pointer is
 
