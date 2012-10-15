@@ -54,7 +54,7 @@ Simple Drag Events
 
 Demo: examples/simple.html
 
-You can bind to dragstart and dragend to know when an item is dragged
+You can bind to `dragstart` and `dragend` to know when an item is dragged
 
     var box = document.getElementById("box")
     box.addEventListener("dragstart", function(e) {
@@ -79,7 +79,7 @@ Add another element to drag things on to
   
     <div id="target" class="target"></div>
 
-dragenter and dragleave do what you'd expect
+`dragenter` and `dragleave` do what you'd expect
 
     var target = document.getElementById("target")
     target.addEventListener("dragenter", function(e) {
@@ -120,7 +120,7 @@ Demo: examples/data.html
 
 We usually want to drag something. Think about it as data, not HTML.
 
-Use the data transfer object to share data between events
+Use the `dataTransfer` object to share data between events
 
     box.addEventListener("dragenter", function(e) {
         e.dataTransfer.setData("text/plain", "hello!")
@@ -185,7 +185,7 @@ You can set it to a div instead, but it only works if the div is already display
     // this works
     var div = document.getElementById("indicator")
 
-    // neither of these work. this doesn't work. The cloned version isn't in the DOM.
+    // neither of these work. They aren't in the DOM
     var div = document.getElementById("indicator").cloneNode()
     var div = document.createElement("div")
 
