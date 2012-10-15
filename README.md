@@ -42,18 +42,20 @@ Demos
 Images, Links, and Draggable
 ----------------------------
 
-* Images and links are draggable by default
-* You can make any div draggable
+Images and links are draggable by default
+
+You can make any div draggable
 
     <div id="box" draggable="true" class="blue square"></div>
 
-* This leaves the item in place, and drags an indicator
+This leaves the item in place, and drags an indicator
 
 Simple Drag Events
 ------------------
 
-* See: examples/simple.html
-* You can bind to dragstart and dragend to know when an item is dragged
+See: examples/simple.html
+
+You can bind to dragstart and dragend to know when an item is dragged
 
     var box = document.getElementById("box")
     box.addEventListener("dragstart", function(e) {
@@ -65,16 +67,16 @@ Simple Drag Events
       
     })
 
-* These are important for setting data and changing the visual appearance
+These are important for setting data and changing the visual appearance
 
 Simple Drop Events
 ------------------
 
-* Add another element to drag things on to
+Add another element to drag things on to
   
     <div id="target" class="target"></div>
 
-* dragenter and dragleave do what you'd expect
+dragenter and dragleave do what you'd expect
 
     var target = document.getElementById("target")
     target.addEventListener("dragenter", function(e) {
@@ -88,7 +90,7 @@ Simple Drop Events
       e.target.classList.remove("draggingOver")
     })
 
-* dragover is called continuously when over your area (even when not moving)
+dragover is called continuously when over your area (even when not moving)
 
     target.addEventListener("dragover", function(e) {
       // this gets called a lot!
@@ -97,7 +99,7 @@ Simple Drop Events
 Accepting a Drop
 ----------------
 
-* You must cancel the dragover event to indicate you accept that kind of drag
+You must cancel the dragover event to indicate you accept that kind of drag
 
     target.addEventListener("dragover", function(e) {
       e.preventDefault()
@@ -108,14 +110,14 @@ Accepting a Drop
       // dropped! Check out e.dataTransfer
     })
 
-* Note that dragleave is not called on a drop.
+Note that dragleave is not called on a drop.
 
 TODO: ??? Have to also cancel dragenter?
 
 Dragging Data
 -------------
 
-* We usually want to drag something. Think of dragging data
+We usually want to drag something. Think of dragging data
 
 TODO: dataTransfer object (dropEffect, effectAllowed, files, items, types)
 
@@ -130,7 +132,7 @@ Controlling the Drag Visual
 TODO: Manipulate the starting item
 TODO: Manipulate the indicator
 TODO: Highlighting the target when it happens (listen to dragstart on document?)
-TODO: pointer-events: none -- to prevent it from 
+TODO: pointer-events: none -- to prevent it from grabbing the 
 
 Moving the item instead of the indicator
 ----------------------------------------
